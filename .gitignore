@@ -1,0 +1,13 @@
+# Kredensial & Key
+*.pem
+*.key
+.env
+id_rsa
+
+# Log & Dump Data
+*.log
+*.pcap
+
+# Sistem & Editor
+.DS_Store
+.vscode/
