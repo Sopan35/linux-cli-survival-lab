@@ -11,3 +11,5 @@ id_rsa
 # Sistem & Editor
 .DS_Store
 .vscode/
+
+# Ignore temporary OS files
