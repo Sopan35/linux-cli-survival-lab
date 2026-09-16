@@ -3,9 +3,24 @@
 
 ## Objective
 
-Memahami struktur filesystem Linux dan melakukan operasi dasar terhadap file dan direktori melalui command-line interface (CLI).
+Memahami struktur filesystem Linux dan melakukan operasi dasar terhadap file dan direktori melalui **Command Line Interface (CLI)**.
 
-Pada lab ini dilakukan praktik membuat direktori, membuat file, berpindah direktori, menyalin file, memindahkan file, menghapus file, mengidentifikasi hidden file, mencari file dan direktori, memeriksa metadata filesystem, membuat symbolic link, serta mengamati penggunaan disk.
+Pada lab ini dilakukan praktik:
+
+* Membuat direktori.
+* Membuat file.
+* Berpindah direktori.
+* Menyalin file.
+* Memindahkan file.
+* Rename file.
+* Menghapus file.
+* Mengidentifikasi hidden file.
+* Mencari file dan direktori.
+* Memeriksa metadata filesystem.
+* Memeriksa inode.
+* Membuat symbolic link.
+* Mengamati penggunaan disk.
+* Melakukan troubleshooting terhadap command-line error.
 
 ---
 
@@ -21,12 +36,12 @@ Pada lab ini dilakukan praktik membuat direktori, membuat file, berpindah direkt
 
 ```bash
 ls
-ls -la
 pwd
 cd
 mkdir
 touch
 cat
+echo
 cp
 mv
 rm -i
@@ -36,12 +51,11 @@ file
 stat
 ls -i
 ln -s
-history
 ```
 
 ---
 
-## Lab Structure
+# Lab Structure
 
 Direktori latihan dibuat dengan struktur berikut:
 
@@ -60,7 +74,7 @@ Struktur ini digunakan sebagai lingkungan latihan filesystem lokal.
 
 ## 1. Membuat Direktori Lab
 
-Perintah:
+### Command
 
 ```bash
 mkdir lab-data
@@ -75,7 +89,7 @@ Kemudian struktur diperiksa menggunakan:
 ls
 ```
 
-Output:
+### Output
 
 ```text
 lab-data  README.md
@@ -95,13 +109,13 @@ Struktur tersebut digunakan sebagai filesystem latihan.
 
 ## 2. Memeriksa Detail Direktori
 
-Perintah:
+### Command
 
 ```bash
 ls -la lab-data/
 ```
 
-Output:
+### Output
 
 ```text
 total 20
@@ -114,12 +128,11 @@ drwxrwxr-x 2 user user 4096 Agu 27 13:25 logs
 
 ### Observation
 
-Option `-a` digunakan untuk menampilkan seluruh entry termasuk:
+Option `-a` digunakan untuk menampilkan seluruh entry, termasuk:
 
-```text
-.
-..
-```
+* `.`
+* `..`
+* hidden files
 
 Option `-l` menampilkan informasi detail seperti:
 
@@ -134,13 +147,13 @@ Option `-l` menampilkan informasi detail seperti:
 
 ## 3. Verifikasi Struktur Direktori dengan `find`
 
-Perintah:
+### Command
 
 ```bash
 find lab-data -maxdepth 2 -type d
 ```
 
-Output:
+### Output
 
 ```text
 lab-data
@@ -161,31 +174,39 @@ Option:
 
 digunakan untuk membatasi hasil hanya pada direktori.
 
+Option:
+
+```text
+-maxdepth 2
+```
+
+membatasi kedalaman pencarian hingga dua level dari direktori target.
+
 ---
 
 ## 4. Navigasi Filesystem dengan `cd` dan `pwd`
 
-Perintah:
+### Berpindah ke direktori `documents`
 
 ```bash
 cd ~/linux-cli-survival-lab/02-filesystem/lab-data/documents
 pwd
 ```
 
-Output:
+### Output
 
 ```text
 /home/user/linux-cli-survival-lab/02-filesystem/lab-data/documents
 ```
 
-Kemudian:
+Kemudian kembali ke parent directory:
 
 ```bash
 cd ..
 pwd
 ```
 
-Output:
+### Output
 
 ```text
 /home/user/linux-cli-survival-lab/02-filesystem/lab-data
@@ -193,7 +214,7 @@ Output:
 
 ### Observation
 
-`cd ..` digunakan untuk berpindah ke parent directory.
+`cd ..` digunakan untuk berpindah ke **parent directory**.
 
 Praktik ini menunjukkan penggunaan:
 
@@ -206,7 +227,7 @@ Praktik ini menunjukkan penggunaan:
 
 ## 5. Membuat File dengan `touch`
 
-Perintah:
+### Command
 
 ```bash
 touch notes.txt
@@ -220,7 +241,7 @@ Kemudian:
 ls -l
 ```
 
-Output:
+### Output
 
 ```text
 -rw-rw-r-- 1 user user 0 Agu 27 13:28 commands.txt
@@ -232,13 +253,13 @@ Output:
 
 `touch` digunakan untuk membuat file kosong apabila file belum ada.
 
-Ukuran file yang baru dibuat adalah `0` byte.
+Ukuran file yang baru dibuat adalah `0 byte`.
 
 ---
 
 ## 6. Menulis Data ke File
 
-Perintah:
+### Command
 
 ```bash
 echo "Linux CLI practice" > notes.txt
@@ -254,7 +275,7 @@ cat commands.txt
 cat todo.txt
 ```
 
-Output:
+### Output
 
 ```text
 Linux CLI practice
@@ -270,15 +291,15 @@ Operator:
 >
 ```
 
-digunakan untuk mengarahkan output command ke file.
+digunakan untuk mengarahkan output command ke sebuah file.
 
-Jika file sudah memiliki isi, operator `>` akan mengganti isi sebelumnya.
+Jika file sudah memiliki isi, operator `>` akan **menimpa isi sebelumnya**.
 
 ---
 
 ## 7. Menyalin File dengan `cp`
 
-Perintah:
+### Command
 
 ```bash
 cp notes.txt ../backup/
@@ -290,7 +311,7 @@ Kemudian:
 ls -l ../backup/
 ```
 
-Output:
+### Output
 
 ```text
 -rw-rw-r-- 1 user user 19 Agu 27 13:30 notes.txt
@@ -302,7 +323,7 @@ Isi file diperiksa menggunakan:
 cat ../backup/notes.txt
 ```
 
-Output:
+### Output
 
 ```text
 Linux CLI practice
@@ -319,13 +340,13 @@ documents/notes.txt
 backup/notes.txt
 ```
 
-keduanya tetap tersedia sebagai file terpisah.
+keduanya tetap tersedia sebagai file yang terpisah.
 
 ---
 
 ## 8. Rename File dengan `mv`
 
-Perintah:
+### Command
 
 ```bash
 mv todo.txt tasks.txt
@@ -347,7 +368,7 @@ tasks.txt
 
 ### Observation
 
-`mv` dapat digunakan untuk memindahkan file sekaligus melakukan rename.
+`mv` dapat digunakan untuk memindahkan file sekaligus melakukan **rename**.
 
 Dalam praktik ini:
 
@@ -359,7 +380,7 @@ todo.txt → tasks.txt
 
 ## 9. Memindahkan File ke Direktori Lain
 
-Perintah:
+### Command
 
 ```bash
 mv commands.txt ../logs/
@@ -371,7 +392,7 @@ Kemudian:
 ls -l ../logs/
 ```
 
-Output:
+### Output
 
 ```text
 -rw-rw-r-- 1 user user 19 Agu 27 13:29 commands.txt
@@ -409,7 +430,7 @@ Kemudian:
 rm -i temporary.txt
 ```
 
-Output:
+### Output
 
 ```text
 rm: remove regular empty file 'temporary.txt'? y
@@ -455,7 +476,7 @@ tasks.txt
 
 ### Observation
 
-Pada Linux, nama file yang diawali karakter `.` secara konvensi diperlakukan sebagai hidden file.
+Pada Linux, nama file yang diawali karakter `.` secara konvensi diperlakukan sebagai **hidden file**.
 
 Hidden file tetap dapat diakses menggunakan nama atau path-nya.
 
@@ -463,13 +484,13 @@ Hidden file tetap dapat diakses menggunakan nama atau path-nya.
 
 ## 12. Mencari File dengan `find`
 
-Perintah:
+### Command
 
 ```bash
 find lab-data -type f
 ```
 
-Output:
+### Output
 
 ```text
 lab-data/logs/commands.txt
@@ -487,7 +508,7 @@ Option:
 -type f
 ```
 
-digunakan untuk mencari file biasa.
+digunakan untuk mencari **file biasa (regular file)**.
 
 Hasil menunjukkan seluruh file yang terdapat di dalam `lab-data`.
 
@@ -495,13 +516,13 @@ Hasil menunjukkan seluruh file yang terdapat di dalam `lab-data`.
 
 ## 13. Mencari Direktori dengan `find`
 
-Perintah:
+### Command
 
 ```bash
 find lab-data -type d
 ```
 
-Output:
+### Output
 
 ```text
 lab-data
@@ -524,13 +545,13 @@ digunakan untuk mencari direktori.
 
 ## 14. Melihat Penggunaan Disk dengan `du`
 
-Perintah:
+### Command
 
 ```bash
 du -h lab-data
 ```
 
-Output:
+### Output
 
 ```text
 8,0K    lab-data/logs
@@ -545,7 +566,7 @@ Kemudian:
 du -sh lab-data
 ```
 
-Output:
+### Output
 
 ```text
 32K     lab-data
@@ -561,7 +582,7 @@ Option:
 -h
 ```
 
-menampilkan ukuran dalam format yang lebih mudah dibaca.
+menampilkan ukuran dalam format yang lebih mudah dibaca (*human-readable*).
 
 Option:
 
@@ -571,19 +592,19 @@ Option:
 
 menampilkan total penggunaan untuk target yang diberikan.
 
-Perbedaan ukuran direktori dengan ukuran isi file yang terlihat dapat terjadi karena filesystem menggunakan metadata dan block allocation.
+Ukuran direktori yang ditampilkan oleh `du` tidak sama dengan jumlah byte isi file karena filesystem juga menggunakan **metadata dan block allocation**.
 
 ---
 
-## 15. Memeriksa Struktur Akhir Lab
+# 15. Memeriksa Struktur Akhir Lab
 
-Perintah:
+### Command
 
 ```bash
 find lab-data -maxdepth 2 -print
 ```
 
-Output:
+### Output
 
 ```text
 lab-data
@@ -597,7 +618,7 @@ lab-data/documents/.hidden-file
 lab-data/documents/tasks.txt
 ```
 
-Struktur akhir:
+### Struktur Akhir
 
 ```text
 lab-data/
@@ -611,21 +632,25 @@ lab-data/
     └── commands.txt
 ```
 
+Struktur akhir sesuai dengan hasil operasi filesystem yang telah dilakukan selama lab.
+
 ---
 
-## 16. Filesystem Metadata dengan `file`, `stat`, dan `ls -i`
+# 16. Filesystem Metadata dengan `file`, `stat`, dan `ls -i`
 
 Selain operasi file dasar, dilakukan pemeriksaan metadata terhadap file `notes.txt`.
 
-### 16.1 Identifikasi Tipe File dengan `file`
+---
 
-Command:
+## 16.1 Identifikasi Tipe File dengan `file`
+
+### Command
 
 ```bash
 file lab-data/documents/notes.txt
 ```
 
-Output:
+### Output
 
 ```text
 lab-data/documents/notes.txt: ASCII text
@@ -643,15 +668,15 @@ ASCII text
 
 ---
 
-### 16.2 Melihat Metadata File dengan `stat`
+## 16.2 Melihat Metadata File dengan `stat`
 
-Command:
+### Command
 
 ```bash
 stat lab-data/documents/notes.txt
 ```
 
-Output:
+### Output
 
 ```text
 File: lab-data/documents/notes.txt
@@ -680,25 +705,28 @@ Output juga menampilkan informasi waktu seperti:
 
 Beberapa informasi penting:
 
-* `Size` — ukuran file dalam byte.
-* `Inode` — nomor inode yang digunakan filesystem untuk mengidentifikasi file.
-* `Links` — jumlah hard link.
-* `Uid` — user owner.
-* `Gid` — group owner.
-* `Access` — permission file.
-* Timestamp — waktu akses, modifikasi, perubahan metadata, dan informasi birth apabila tersedia.
+| Field       | Keterangan                                                                        |
+| ----------- | --------------------------------------------------------------------------------- |
+| `Size`      | Ukuran file dalam byte                                                            |
+| `Blocks`    | Jumlah filesystem blocks yang dialokasikan                                        |
+| `Inode`     | Nomor inode yang digunakan filesystem                                             |
+| `Links`     | Jumlah hard link                                                                  |
+| `Uid`       | User owner                                                                        |
+| `Gid`       | Group owner                                                                       |
+| `Access`    | Permission file                                                                   |
+| `Timestamp` | Informasi waktu akses, modifikasi, perubahan metadata, dan birth apabila tersedia |
 
 ---
 
-### 16.3 Melihat Inode dengan `ls -i`
+## 16.3 Melihat Inode dengan `ls -i`
 
-Command:
+### Command
 
 ```bash
 ls -li lab-data/documents/notes.txt
 ```
 
-Output:
+### Output
 
 ```text
 1573649 -rw-rw-r-- 1 user user 19 Agu 27 13:29 lab-data/documents/notes.txt
@@ -718,11 +746,11 @@ Inode digunakan filesystem Unix/Linux untuk menyimpan metadata mengenai file.
 
 ---
 
-## 17. Symbolic Link
+# 17. Symbolic Link
 
 Selanjutnya dibuat symbolic link menuju `notes.txt`.
 
-Command:
+### Command
 
 ```bash
 ln -s ../documents/notes.txt lab-data/backup/notes-link.txt
@@ -734,7 +762,7 @@ Kemudian diperiksa menggunakan:
 ls -l lab-data/backup/
 ```
 
-Output:
+### Output
 
 ```text
 lrwxrwxrwx 1 user user 22 Agu 27 13:42 notes-link.txt -> ../documents/notes.txt
@@ -743,7 +771,7 @@ lrwxrwxrwx 1 user user 22 Agu 27 13:42 notes-link.txt -> ../documents/notes.txt
 
 ### Observation
 
-`notes-link.txt` merupakan symbolic link yang menunjuk ke:
+`notes-link.txt` merupakan **symbolic link** yang menunjuk ke:
 
 ```text
 ../documents/notes.txt
@@ -755,7 +783,7 @@ Karakter `l` pada awal permission:
 lrwxrwxrwx
 ```
 
-menunjukkan bahwa objek tersebut adalah symbolic link.
+menunjukkan bahwa objek tersebut merupakan symbolic link.
 
 Isi target dapat diakses melalui symbolic link menggunakan:
 
@@ -763,17 +791,19 @@ Isi target dapat diakses melalui symbolic link menggunakan:
 cat lab-data/backup/notes-link.txt
 ```
 
-Output:
+### Output
 
 ```text
 Linux CLI practice
 ```
 
-### Troubleshooting
+---
+
+## Troubleshooting Symbolic Link
 
 Pada percobaan pertama, symbolic link dibuat menggunakan target:
 
-```bash
+```text
 lab-data/documents/notes.txt
 ```
 
@@ -793,27 +823,29 @@ ln -s ../documents/notes.txt lab-data/backup/notes-link.txt
 
 Setelah diperbaiki, symbolic link berhasil digunakan untuk membaca file target.
 
-### Verification
+---
 
-File asli:
+## Verification
+
+### File asli
 
 ```bash
 ls -li lab-data/documents/notes.txt
 ```
 
-Output:
+### Output
 
 ```text
 1573649 -rw-rw-r-- 1 user user 19 Agu 27 13:29 lab-data/documents/notes.txt
 ```
 
-Symbolic link:
+### Symbolic link
 
 ```bash
 ls -li lab-data/backup/notes-link.txt
 ```
 
-Output:
+### Output
 
 ```text
 1573644 lrwxrwxrwx 1 user user 22 Agu 27 13:42 lab-data/backup/notes-link.txt -> ../documents/notes.txt
@@ -828,15 +860,15 @@ notes.txt      → inode 1573649
 notes-link.txt → inode 1573644
 ```
 
-Hal ini menunjukkan bahwa symbolic link merupakan objek filesystem tersendiri yang menyimpan referensi menuju path target, bukan salinan isi file.
+Hal ini menunjukkan bahwa symbolic link merupakan **objek filesystem tersendiri** yang menyimpan referensi menuju path target, bukan salinan isi file.
 
 ---
 
-# Troubleshooting / Mistake Encountered
+# 18. Troubleshooting / Mistake Encountered
 
 Selama praktik terdapat percobaan menjalankan:
 
-```bash
+```text
 tasks.txt
 notes.txt
 ```
@@ -848,7 +880,7 @@ tasks.txt: command not found
 notes.txt: command not found
 ```
 
-### Analysis
+## Analysis
 
 Shell menginterpretasikan input tersebut sebagai nama command.
 
@@ -879,7 +911,7 @@ dengan permission executable yang sesuai.
 
 ---
 
-# Analysis
+# 🔐 Analysis
 
 Praktik ini menunjukkan operasi dasar filesystem Linux secara langsung melalui CLI.
 
@@ -905,30 +937,41 @@ Praktik ini memberikan dasar untuk memahami bagaimana data diorganisasikan, disi
 
 ---
 
-# Security Relevance
+# 🛡️ Security Relevance
 
 Filesystem merupakan bagian penting dalam administrasi sistem dan keamanan Linux.
 
-Kemampuan melakukan enumeration terhadap file dan direktori diperlukan untuk memahami:
+Kemampuan melakukan **filesystem enumeration** diperlukan untuk memahami:
 
 * lokasi file konfigurasi,
 * struktur direktori,
-* file yang tersembunyi,
+* hidden file,
 * lokasi data,
 * penggunaan storage,
 * ownership,
 * permission,
 * metadata filesystem,
 * inode,
-* serta symbolic link.
+* symbolic link.
 
-Pada security assessment yang terotorisasi, kemampuan seperti `find`, `ls`, `cat`, `stat`, dan `file` dapat membantu proses local system enumeration.
+Dalam **security assessment yang terotorisasi**, command seperti `find`, `ls`, `cat`, `stat`, dan `file` dapat membantu proses **local system enumeration**.
 
-Lab ini dilakukan hanya pada sistem Ubuntu milik sendiri.
+Filesystem enumeration juga menjadi dasar untuk memahami topik security berikutnya seperti:
+
+* file permissions,
+* ownership,
+* SUID/SGID,
+* sensitive files,
+* credential files,
+* log files,
+* privilege escalation,
+* insecure configurations.
+
+> Lab ini dilakukan hanya pada sistem Ubuntu milik sendiri atau sistem yang telah mendapatkan izin pengujian.
 
 ---
 
-# Lessons Learned
+# 📚 Lessons Learned
 
 Dari lab ini saya mempelajari:
 
@@ -947,15 +990,38 @@ Dari lab ini saya mempelajari:
 * Konsep inode pada filesystem Linux.
 * Perbedaan file biasa dengan symbolic link.
 * Pentingnya memahami bagaimana shell menginterpretasikan input sebagai command.
+* Pentingnya berhati-hati saat melakukan operasi filesystem.
 
 ---
 
-# Conclusion
+# 🎯 Conclusion
 
-Lab 02 memberikan pengalaman hands-on dalam mengelola filesystem Linux melalui CLI.
+Lab 02 memberikan pengalaman **hands-on** dalam mengelola filesystem Linux melalui CLI.
 
 Selain memahami command dasar, praktik ini menunjukkan bahwa operasi filesystem harus dilakukan dengan hati-hati karena command seperti `mv`, `cp`, dan terutama `rm` dapat mengubah atau menghapus data.
 
-Lab ini juga memberikan pemahaman awal mengenai metadata filesystem, inode, dan symbolic link yang akan berguna untuk administrasi sistem dan pembelajaran keamanan Linux.
+Lab ini juga memberikan pemahaman awal mengenai:
 
-Pemahaman filesystem ini akan menjadi dasar untuk lab berikutnya, khususnya ketika mempelajari user, group, ownership, permission, process, service, dan system logs.
+* filesystem metadata,
+* inode,
+* symbolic link,
+* absolute path,
+* relative path,
+* file operations,
+* filesystem enumeration.
+
+Pemahaman filesystem ini akan menjadi dasar untuk lab berikutnya, khususnya ketika mempelajari:
+
+**user → group → ownership → permission → process → service → system logs → privilege escalation.**
+
+---
+
+## Lab Status
+
+**Status:** ✅ Completed
+
+**Focus:** Linux Filesystem & File Operations
+
+**Security Focus:** Filesystem Enumeration
+
+**Next Topic:** File Permissions, Ownership & SUID/SGID
