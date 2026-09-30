@@ -267,7 +267,7 @@ Setelah menyelesaikan seluruh lab, diharapkan mampu:
 
 Fundamental tersebut kemudian menjadi dasar untuk mempelajari:
 
-**Networking → Python untuk Cybersecurity → Penetration Testing**
+**Networking → Penetration Testing → Python For CyberSecurity**
 
 
 
